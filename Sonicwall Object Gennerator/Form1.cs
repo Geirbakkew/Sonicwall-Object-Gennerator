@@ -48,7 +48,6 @@ namespace Sonicwall_Object_Gennerator
                     Path.GetTempPath()+"msft-public-ips.csv"
                 );
             }
-            richTextBox2.AppendText("address-group Microsoft_WAN");
             String line;
             try
             {
@@ -72,12 +71,17 @@ namespace Sonicwall_Object_Gennerator
                         {
                             case System.Net.Sockets.AddressFamily.InterNetwork:
                                 // This is IPv4 address
-                                richTextBox1.AppendText(Environment.NewLine + "address - object " + "\"MS " + TMP.First() + "\"");
-                                richTextBox2.AppendText(Environment.NewLine + "address - object " + "\"MS " + TMP.First() + "\"");
-                                
+                                richTextBox1.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + TMP.First() + "\"");
                                 richTextBox1.AppendText(Environment.NewLine + "network " + IP_Subnett.First() + " " + getSubnetAddressFromIPNetMask(IP_Subnett.Last()));
                                 richTextBox1.AppendText(Environment.NewLine + "zone WAN");
-                                richTextBox1.AppendText(Environment.NewLine + "exit" + Environment.NewLine); 
+                                richTextBox1.AppendText(Environment.NewLine + "exit" + Environment.NewLine);
+
+                                richTextBox2.AppendText(Environment.NewLine + "address-group ipv4 Microsoft_WAN");
+                                richTextBox2.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + TMP.First() + "\"");
+                                richTextBox2.AppendText(Environment.NewLine + "exit");
+                                richTextBox2.AppendText(Environment.NewLine + "commit");
+
+                                
 
                                 //richTextBox1.AppendText(Environment.NewLine + "This is IPv4 address");
                                 //richTextBox1.AppendText(Environment.NewLine + IP_Subnett.First());
@@ -112,7 +116,7 @@ namespace Sonicwall_Object_Gennerator
             {
                 Console.WriteLine("Executing finally block.");
             }
-            richTextBox2.AppendText(Environment.NewLine + "exit" );
+            richTextBox1.AppendText(Environment.NewLine + "commit");
             btn_Download.Enabled = true;
             lblWarning.Text = "Ferdig!";
 
