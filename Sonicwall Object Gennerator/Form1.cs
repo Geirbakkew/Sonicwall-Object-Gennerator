@@ -12,7 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.IO;
 using System.Security.Policy;
 using System.Xml.Linq;
-
+using Newtonsoft.Json;
 
 
 
@@ -246,6 +246,36 @@ namespace Sonicwall_Object_Gennerator
         {
 
         }
+
+        private void btn_Json_Click(object sender, EventArgs e)
+        {
+
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("https://endpoints.office.com/endpoints/Worldwide?ClientRequestId=b10c5ed1-bad1-445f-b386-b919946339a7");
+            httpWebRequest.Method = WebRequestMethods.Http.Get;
+            httpWebRequest.Accept = "application/json; charset=utf-8";
+            string file;
+            var response = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var sr = new StreamReader(response.GetResponseStream()))
+            {
+                file = sr.ReadToEnd();
+            }
+
+
+            //var table = JsonConvert.DeserializeAnonymousType(file, new { Makes = default(DataTable) }).Makes;
+           
+            //var table = JsonConvert.DeserializeAnonymousType(file, new { Makes = default(DataTable) }).Makes;
+            
+
+            /*
+            if (table.Rows.Count > 0)
+            {
+                //do something 
+
+                MessageBox.Show(Convert.ToString(table.Rows[0][0]));
+            }
+            */
+        }
     }
+    
 }
 

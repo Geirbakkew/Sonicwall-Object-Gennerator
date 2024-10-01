@@ -32,6 +32,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.lblWarning = new System.Windows.Forms.Label();
+            this.btn_Json = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_Download
@@ -69,11 +70,22 @@
             this.lblWarning.Size = new System.Drawing.Size(0, 24);
             this.lblWarning.TabIndex = 5;
             // 
+            // btn_Json
+            // 
+            this.btn_Json.Location = new System.Drawing.Point(108, 12);
+            this.btn_Json.Name = "btn_Json";
+            this.btn_Json.Size = new System.Drawing.Size(118, 27);
+            this.btn_Json.TabIndex = 6;
+            this.btn_Json.Text = "Download JSON";
+            this.btn_Json.UseVisualStyleBackColor = true;
+            this.btn_Json.Click += new System.EventHandler(this.btn_Json_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(678, 857);
+            this.Controls.Add(this.btn_Json);
             this.Controls.Add(this.lblWarning);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
@@ -93,6 +105,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.Label lblWarning;
+        private System.Windows.Forms.Button btn_Json;
     }
 }
 
