@@ -13,6 +13,8 @@ using System.IO;
 using System.Security.Policy;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections;
 
 
 
@@ -253,29 +255,68 @@ namespace Sonicwall_Object_Gennerator
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("https://endpoints.office.com/endpoints/Worldwide?ClientRequestId=b10c5ed1-bad1-445f-b386-b919946339a7");
             httpWebRequest.Method = WebRequestMethods.Http.Get;
             httpWebRequest.Accept = "application/json; charset=utf-8";
-            string file;
+            string file ="";
             var response = (HttpWebResponse)httpWebRequest.GetResponse();
             using (var sr = new StreamReader(response.GetResponseStream()))
             {
                 file = sr.ReadToEnd();
             }
 
+            JArray jsonArray = JArray.Parse(file);
 
-            //var table = JsonConvert.DeserializeAnonymousType(file, new { Makes = default(DataTable) }).Makes;
-           
-            //var table = JsonConvert.DeserializeAnonymousType(file, new { Makes = default(DataTable) }).Makes;
-            
-
-            /*
-            if (table.Rows.Count > 0)
+            foreach (JObject item in jsonArray)
             {
-                //do something 
+              
+                if (item["ips"] != null) { 
 
-                MessageBox.Show(Convert.ToString(table.Rows[0][0]));
+                    List<string> ips = JsonConvert.DeserializeObject<List<string>>(item["ips"].ToString());
+               // Console.WriteLine(string.Join(", ", ips.ToArray()));
+                }
+
+                if (item["urls"] != null)
+                {
+                    List<string> urls = JsonConvert.DeserializeObject<List<string>>(item["urls"].ToString());
+                    //Console.WriteLine(string.Join(", ", urls.ToArray()));
+                    //urls.ForEach(Console.WriteLine) ;
+                    foreach (string url in urls)
+                    {
+                        richTextBox1.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + url.ToString() + "\"");
+                        richTextBox1.AppendText(Environment.NewLine + "network " + url.ToString());
+
+                        //richTextBox1.AppendText(Environment.NewLine + "network " + IP_Subnett.First() + " " + getSubnetAddressFromIPNetMask(IP_Subnett.Last()));
+                        richTextBox1.AppendText(Environment.NewLine + "zone WAN");
+                        richTextBox1.AppendText(Environment.NewLine + "exit" + Environment.NewLine);
+                    }
+
+                }
+
+                
+
             }
-            */
+
         }
+
     }
     
+
+    public class SearchResult
+    {
+        public string id { get; set; }
+        public string serviceArea { get; set; }
+        public string serviceAreaDisplayName { get; set; }
+    }
+
+
+    public class RootObject
+    {
+        public List<Item> items { get; set; }
+    }
+    public class Item
+    {
+        public string name { get; set; }
+        public string index { get; set; }
+        public string optional { get; set; }
+    }
+
 }
 
