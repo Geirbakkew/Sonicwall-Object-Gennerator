@@ -5,3 +5,5 @@ Login to Sonicwall SSH, enable config.
 Ctrl+a in left colum copy and paste in to cli.
 
 After thats finish do the sam on rigth colum.
+
+Added Json Office 365 download and converts to Sonicwall Cli.
