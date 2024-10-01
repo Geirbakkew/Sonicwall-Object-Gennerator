@@ -270,6 +270,41 @@ namespace Sonicwall_Object_Gennerator
                 if (item["ips"] != null) { 
 
                     List<string> ips = JsonConvert.DeserializeObject<List<string>>(item["ips"].ToString());
+                    foreach (string ip in ips)
+                    {
+                        if (ip != null)
+                        {
+                            string[] TMP = ip.Split(',').Select(str => str.Trim()).ToArray();
+                            string[] IP_Subnett = TMP.First().Split('/');
+
+                            IPAddress address;
+                            if (IPAddress.TryParse(IP_Subnett.First(), out address))
+                            {
+                                switch (address.AddressFamily)
+                                {
+                                    case System.Net.Sockets.AddressFamily.InterNetwork:
+                                        // This is IPv4 address
+                                        richTextBox1.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + TMP.First() + "\"");
+                                        richTextBox1.AppendText(Environment.NewLine + "network " + IP_Subnett.First() + " " + getSubnetAddressFromIPNetMask(IP_Subnett.Last()));
+                                        richTextBox1.AppendText(Environment.NewLine + "zone WAN");
+                                        richTextBox1.AppendText(Environment.NewLine + "exit" + Environment.NewLine);
+
+                                        richTextBox2.AppendText(Environment.NewLine + "address-group ipv4 Microsoft_WAN");
+                                        richTextBox2.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + TMP.First() + "\"");
+                                        richTextBox2.AppendText(Environment.NewLine + "exit");
+                                        richTextBox2.AppendText(Environment.NewLine + "commit");
+
+                                        break;
+                                    case System.Net.Sockets.AddressFamily.InterNetworkV6:
+
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
                // Console.WriteLine(string.Join(", ", ips.ToArray()));
                 }
 
@@ -280,8 +315,8 @@ namespace Sonicwall_Object_Gennerator
                     //urls.ForEach(Console.WriteLine) ;
                     foreach (string url in urls)
                     {
-                        richTextBox1.AppendText(Environment.NewLine + "address-object ipv4 " + "\"MS " + url.ToString() + "\"");
-                        richTextBox1.AppendText(Environment.NewLine + "network " + url.ToString());
+                        richTextBox1.AppendText(Environment.NewLine + "address-object fqdn " + url.ToString());
+                        richTextBox1.AppendText(Environment.NewLine + "name " + url.ToString());
 
                         //richTextBox1.AppendText(Environment.NewLine + "network " + IP_Subnett.First() + " " + getSubnetAddressFromIPNetMask(IP_Subnett.Last()));
                         richTextBox1.AppendText(Environment.NewLine + "zone WAN");
